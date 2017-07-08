@@ -27,14 +27,14 @@ namespace Fibon.Api.Controllers
                 return Content(result.Value.ToString());
             }
 
-            return Content("0");
+            return Content("Not ready...");
         }
 
         [HttpPost("{number}")]
         public async Task<IActionResult> Post(int number)
         {
             int? result = _repository.Get(number);
-            if (result.HasValue)
+            if (!result.HasValue)
             {
                 await _busClient.PublishAsync(new CalculateValueCommand(){ Number = number });
             }
